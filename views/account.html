@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            *{
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>
+            슈스타그램
+        </h1>
+        <h2>
+            회원가입을 위해 정보를 입력하세요
+        </h2>
+        <div style="display: inline-block;">
+            <form action="/account" method="post">
+                <fieldset>
+                    <table>
+                        <tr>
+                            <td><label for="email">email: </label></td>
+                            <td><input id="email" type="email"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="name">name: </label></td>
+                            <td><input id="name" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="id">id: </label></td>
+                            <td><input id="id" type="text"></td>
+                        </tr>
+                        <tr>
+                            <td><label for="password">password: </label></td>
+                            <td><input id="password" type="password"></td>
+                        </tr>
+                    </table>
+                    <input type="submit" value="회원가입">
+                </fieldset>
+            </form>
+        </div>
+    </body>
+</html>

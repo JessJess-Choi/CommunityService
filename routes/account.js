@@ -3,7 +3,7 @@ const router = express.Router();
 
 router.post('/',(req,res,next) => {
     const {email,name,id,password} = req.body;
-    console.log(name + " : " + id);
+    console.log('name : ' + name + ' id : ' + id + ' pw : ' + password + ' email : ' + email);
 });
 
 module.exports = router;

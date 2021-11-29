@@ -6,12 +6,12 @@ const dotenv = require('dotenv');
 const path = require('path');
 const nunjucks = require('nunjucks');
 const passport = require('passport');
+const {sequelize} = require('./models');
 
 dotenv.config();
 const app = express();
 const initPage = require('./routes/init');
 const accountPage = require('./routes/account');
-
 
 app.set('port',process.env.PORT || 8052);
 app.set('view engine','html');
@@ -19,6 +19,13 @@ nunjucks.configure('views',{
     express: app,
     watch: true,
 });
+sequelize.sync({force: false})
+    .then(() => {
+        console.log('db 연결 성공');
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
 app.use(morgan('dev'));
 app.use(express.static(path.join(__dirname,'public')));
@@ -45,12 +52,15 @@ app.listen(app.get('port'),() =>{
     console.log(app.get('port'));
 });
 
-/*
-app.post('/account',(req,res) => {
-    console.log(req);
-});
-*/
 
 app.use((req,res,next) =>{
-    res.status(404).send('404 Not Found');
+    const error = new Error(`${req.method} ${req.url}`);
+    error.status = 404;
+    next(error);
+});
+app.use((err,req,res,next) => {
+    res.locals.message = err.message;
+    res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+    res.status(err.status || 500);
+    res.render('error');
 });

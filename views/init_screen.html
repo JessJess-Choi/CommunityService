@@ -3,7 +3,8 @@
     <head>
         <style>
             #image{
-                width: 800px;
+                width: 450px;
+                height: 450px;
                 margin: 0 auto;
             }
             *{
@@ -14,14 +15,17 @@
     <body>
         <h1>슈스타그램</h1>
         <img src="ssu_stagram.jpg" id="image">
-        <form>
-            <input type="text" name="id">
+        <form action="/" method="post">
+            <td><label for="id">id: </label></td>
+            <input type="id" name="id" id="id">
             <br>
-            <input type="text" name="password">
+            <td><label for="password">password: </label></td>
+            <input type="password" name="password" id="password">
+            <br>
+                <br>
+            <input type="submit" value="로그인">
         </form>
         <br>
-        <input type="submit" href="login" value="로그인">
-        <br><br>
         <a href="account">회원가입</a>
     </body>
 </html>

@@ -8,16 +8,12 @@ const algorithm = 'aes-256-cbc';
 const key = 'abcdefghijklmnopqrstuvwxyz123456';
 const iv = '1234567890123456';
 
-router.get('/',(req,res,next) =>{
+router.get('/',(req,res,next) => {
     res.render('init_screen');
 });
 
-router.get('/account',(req,res,next) =>{
+router.get('/account',(req,res,next) => {
     res.render('account');
-});
-
-router.get('/profile',(req,res,next) =>{
-    res.render('profile');
 });
 
 router.post('/', async (req,res,next) => {
@@ -29,8 +25,12 @@ router.post('/', async (req,res,next) => {
             const decipher = crypto.createDecipheriv(algorithm,key,iv);
             let decrypt_password = decipher.update(result[0].user_password,'base64','utf-8');
             decrypt_password += decipher.final('utf8');
-            if(decrypt_password == password)
-                res.send("<script>alert('로그인 완료');location.href='profile';</script>");
+            if(decrypt_password == password){
+                global.id = id;
+                global.name = result[0].user_name;
+                global.email = result[0].user_email;
+                res.redirect('/profile');
+            }
             else
                 res.send("<script>alert('wrong id or password');history.back();</script>");
         }

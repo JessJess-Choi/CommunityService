@@ -12,6 +12,7 @@ dotenv.config();
 const app = express();
 const initPage = require('./routes/init');
 const accountPage = require('./routes/account');
+const profilePage = require('./routes/profile');
 
 app.set('port',process.env.PORT || 8052);
 app.set('view engine','html');
@@ -47,6 +48,7 @@ app.use(passport.initialize());
 
 app.use('/',initPage);
 app.use('/account',accountPage);
+app.use('/profile',profilePage);
 
 app.listen(app.get('port'),() =>{
     console.log(app.get('port'));
@@ -62,5 +64,5 @@ app.use((err,req,res,next) => {
     res.locals.message = err.message;
     res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
     res.status(err.status || 500);
-    res.render('error');
+    res.render('error',{err : err.status || 500});
 });

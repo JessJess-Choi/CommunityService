@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            *{
+                text-align: center;
+            }
+            #unbox{
+                background-color: blue;
+            }
+            #box{
+                background-color: red;
+            }
+        </style>
+        <script>
+            function button(){
+                alert(this.value);
+                if(this.value == 'follow'){
+                    this.value = 'unfollow';
+                    this.style.background = 'blue';
+                }
+                else{
+                    this.value = 'follow';
+                    this.style.background = 'red';
+                }
+            }
+            
+        </script>
+    </head>
+    <body>
+        <h1>follow/unfollow 정보</h1>
+        <h2>아이디 : {{id}}</h2>
+        <br>
+        <h2>
+            {% for i in following %}
+            유저 {{loop.index}} : {{i.following}}
+            <form>
+                <input type='button' value='unfollow' id="box" onclick="button()">
+            </form>
+            <br>
+            {% endfor %}
+            {% for i in unfollowing %}
+            유저 {{loop.index}} : {{i.user_id}}
+            <form>
+                <input type='button' value='follow' id="unbox" onclick="button()">
+            </form>
+            <br>
+            {% endfor %}
+        </h2>
+    </body>
+</html>

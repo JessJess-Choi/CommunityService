@@ -13,6 +13,9 @@ const app = express();
 const initPage = require('./routes/init');
 const accountPage = require('./routes/account');
 const profilePage = require('./routes/profile');
+const homePage = require('./routes/home');
+const followPage = require('./routes/follow');
+const newPage = require('./routes/new');
 
 app.set('port',process.env.PORT || 8052);
 app.set('view engine','html');
@@ -49,6 +52,9 @@ app.use(passport.initialize());
 app.use('/',initPage);
 app.use('/account',accountPage);
 app.use('/profile',profilePage);
+app.use('/home',homePage);
+app.use('/follow',followPage);
+app.use('/new',newPage);
 
 app.listen(app.get('port'),() =>{
     console.log(app.get('port'));

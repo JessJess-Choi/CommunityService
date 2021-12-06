@@ -26,10 +26,11 @@ router.post('/', async (req,res,next) => {
             let decrypt_password = decipher.update(result[0].user_password,'base64','utf-8');
             decrypt_password += decipher.final('utf8');
             if(decrypt_password == password){
+                global.loginCheck = true;
                 global.id = id;
                 global.name = result[0].user_name;
                 global.email = result[0].user_email;
-                res.redirect('/profile');
+                res.redirect('/home');
             }
             else
                 res.send("<script>alert('wrong id or password');history.back();</script>");

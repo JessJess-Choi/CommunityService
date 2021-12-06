@@ -57,17 +57,24 @@ CREATE TABLE follow(
 );
 
 CREATE TABLE post(
-    post_id VARCHAR(64),
+    post_id VARCHAR(10),
     user_id VARCHAR(32),
-    content BLOB,
-    photo MEDIUMBLOB,
+    content VARCHAR(100),
     PRIMARY KEY (post_id),
     FOREIGN KEY (user_id) REFERENCES user(user_id)
 );
 
+CREATE TABLE photo(
+    photo_id VARCHAR(10),
+    post_id VARCHAR(64),
+    photo MEDIUMBLOB,
+    PRIMARY KEY (photo_id),
+    FOREIGN KEY (post_id) REFERENCES post(post_id)
+);
+
 CREATE TABLE hashtag(
     tag VARCHAR(32),
-    post_id VARCHAR(32),
+    post_id VARCHAR(64),
     PRIMARY KEY (tag),
     FOREIGN KEY (post_id) REFERENCES post(post_id)
 );

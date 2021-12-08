@@ -5,47 +5,89 @@
             *{
                 text-align: center;
             }
-            #unbox{
+            .follow{
                 background-color: blue;
             }
-            #box{
+            .followR{
                 background-color: red;
+            }
+            .unfollow{
+                background-color: red;
+            }
+            .unfollowR{
+                background-color: blue;
             }
         </style>
         <script>
-            function button(){
-                alert(this.value);
-                if(this.value == 'follow'){
-                    this.value = 'unfollow';
-                    this.style.background = 'blue';
+            function button(obj,index,id,user_id){
+                let send = [];
+                send.push(id);
+                if(obj.id.substr(0,7) == 'followR'){
+                    let follow = document.getElementById(`followR${index}`);
+                    follow.className = 'follow';
+                    follow.value = 'follow';
+                    follow.id = `follow${index}`;
+                    let f_hidden = document.getElementById(`f_hidden${index}`);
+                    f_hidden.value = 'unfollow';
                 }
-                else{
-                    this.value = 'follow';
-                    this.style.background = 'red';
+                else if(obj.id.substr(0,6) == 'follow'){
+                    let follow = document.getElementById(`follow${index}`);
+                    follow.className = 'followR';
+                    follow.value = 'unfollow';
+                    follow.id = `followR${index}`;
+                    let f_hidden = document.getElementById(`f_hidden${index}`);
+                    f_hidden.value = 'follow';
+                }
+                else if(obj.id.substr(0,9) == 'unfollowR'){
+                    let unfollow = document.getElementById(`unfollowR${index}`);
+                    unfollow.className = 'unfollow';
+                    unfollow.value = 'unfollow';
+                    unfollow.id = `unfollow${index}`;
+                    let u_hidden = document.getElementById(`u_hidden${index}`);
+                    u_hidden.value = 'follow';
+                }
+                else if(obj.id.substr(0,8) == 'unfollow'){
+                    let unfollow = document.getElementById(`unfollow${index}`);
+                    unfollow.className = 'unfollowR';
+                    unfollow.value = 'follow';
+                    unfollow.id = `unfollowR${index}`;
+                    let u_hidden = document.getElementById(`u_hidden${index}`);
+                    u_hidden.value = 'unfollow';
                 }
             }
-            
         </script>
     </head>
     <body>
         <h1>follow/unfollow 정보</h1>
+        <p><a href = "home">홈</a></p>
         <h2>아이디 : {{id}}</h2>
-        <br>
         <h2>
-            {% for i in following %}
-            유저 {{loop.index}} : {{i.following}}
-            <form>
-                <input type='button' value='unfollow' id="box" onclick="button()">
-            </form>
+            follow
             <br>
-            {% endfor %}
-            {% for i in unfollowing %}
-            유저 {{loop.index}} : {{i.user_id}}
-            <form>
-                <input type='button' value='follow' id="unbox" onclick="button()">
+
+            <form action="/follow" method="post">
+                {% for i in following %}
+                유저 {{loop.index}} : {{i.user_id}}
+                <input type="hidden" name="{{i.user_id}}" id="u_hidden{{loop.index}}" value="follow">
+                <input type='button' name="unfollow{{loop.index}}" class="unfollow" value='unfollow' id='unfollow{{loop.index}}' onclick="button(this,{{loop.index}},'{{id}}','{{i.user_id}}')">
+                <br>
+                {% endfor %}
+                <input type="submit" value="저장">
             </form>
+            
             <br>
-            {% endfor %}
+            <hr>
+            unfollow
+
+            <form action="/follow" method="post">
+                {% for i in unfollowing %}
+                유저 {{loop.index}} : {{i.user_id}}
+                <input type="hidden" name="{{i.user_id}}" id="f_hidden{{loop.index}}" value="unfollow">
+                <input type='button' name="follow{{loop.index}}" class="follow" value='follow' id='follow{{loop.index}}' onclick="button(this,{{loop.index}},'{{id}}','{{i.user_id}}')">
+                <br>
+                {% endfor %}
+                <input type="submit" value="저장">
+            </form>
         </h2>
     </body>
 </html>

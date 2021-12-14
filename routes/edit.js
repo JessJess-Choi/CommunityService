@@ -25,6 +25,7 @@ router.post('/edit_or_delete', async (req,res,next) => {
                content = req.body.content;
                flag = true;
                post_number = global.post_id;
+               photo_number = tmp_photo.photo_id;
 
                if(req.body.photo1.length != 0){
                     photo1 = req.body.photo1;

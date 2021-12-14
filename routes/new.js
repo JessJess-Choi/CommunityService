@@ -13,9 +13,11 @@ router.post('/', async (req,res,next) => {
         content = req.body.content;
         flag = true;
         const [tmp, tmp_meta] = await sequelize.query(`SELECT max(post_id) AS post FROM post;`);
-        const [tmp_photo, photo_meta] = await sequelize.query(`SELECT max(photo_id) AS photo FROM photo;`);
+        const [tmp_photo, photo_meta] = await sequelize.query(`SELECT max(photo_id) AS photo_id FROM photo;`);
         post_number = tmp[0].post*1 + 1;
-        photo_number = tmp_photo[0].photo*1 + 1;
+        photo_number = tmp_photo.photo_id*1 + 1;
+        if(isNaN(photo_number))photo_number = 1;
+        
         const today = new Date();
         const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
 

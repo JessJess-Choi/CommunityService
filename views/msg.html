@@ -2,21 +2,52 @@
 <html>
     <head>
         <style>
-            *{
-                text-align: center;
+            .sender{
+                text-align: left;
+            }
+            .receiver{
+                text-align: right;
             }
         </style>
     </head>
     <body>
-        <h1>DM</h1>
+        <h1 style="text-align: center;">DM</h1>
+        <div style="text-align: center;">
+            <a href="home">홈</a>
+        </div>
+        {% if flag %}
+        {% for i in log %}
+        {% if id==i.sender_id %}
+        <div class="receiver">
+            <p>
+                {{i.dm_content}}
+            </p>
+        </div>
+        {% else %}
+        <div class="sender">
+            <p>
+                {{i.dm_content}}
+            </p>
+        </div>
+        {% endif %}
+        <br>
+        {% endfor %}
+        <form action="/msg/store" method="post">
+            <input type="text" name="message">
+            <input type="submit" value="보내기" name="send_button">
+        </form>
+
+        {% else %}
         <h2>
             맞팔로우 리스트
         </h2>
-        <h3>
+        <form action="/msg" method="post">
             {% for i in dm_list %}
-            {{i.following}}
-            <br>
+            <input type="submit" value="{{i.following}}" name="F4F">
             {% endfor %}
-        </h3>
+            <br><br>
+        </form>
+        
+        {% endif %}
     </body>
 </html>

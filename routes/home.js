@@ -4,26 +4,42 @@ const { USER } = require('sequelize/dist/lib/query-types');
 const { sequelize } = require('../models');
 
 router.get('/', async (req,res,next) => {
-    res.render('home');
+    try{
+        if(global.redirect_data){
+            res.render('home',{data : global.redirect_data});
+            global.redirect_data = undefined;
+        }
+        else{
+            const [result, metadata] = await sequelize.query(`SELECT user_name, post_date, content, post_id FROM user NATURAL JOIN post;`);
+            const [photo_result, meta_photo] = await sequelize.query(`SELECT photo FROM post NATURAL JOIN photo;`);
+            res.render('home',{data : result, photo : photo_result});
+        }
+    }
+    catch(err){
+        console.log(err);
+        next(err);
+    }
 });
 
-router.post('/', async (req,res,next) => {
+router.post('/', async (req,res,next) => {              //post_id 만 알면 모든 정보를 알 수 있다.
     try{
+        let result, metadata;
+        let result_tag, meta;
         const {check, search} = req.body;
         if(check == 'hashtag'){
-            const [result, metadata] = await sequelize.query(`SELECT * FROM post NATURAL JOIN photo NATURAL JOIN hashtag WHERE tag LIKE '%${search}%';`);
-            console.log(result);
+            [result, metadata] = await sequelize.query(`SELECT * FROM user NATURAL JOIN post NATURAL JOIN photo NATURAL JOIN hashtag WHERE tag LIKE '%${search}%';`);
+            global.redirect_data = result;
         }
-        else if(check == 'text'){               //태그는 따로 검색해서 넣을것
-            const [result, metadata] = await sequelize.query(`SELECT * FROM post NATURAL JOIN photo WHERE content LIKE '%${search}%';`);
-            const [result_tag, meta] = await sequelize.query(`SELECT tag FROM hashtag NATURAL JOIN post NATURAL JOIN photo WHERE content LIKE '%${search}%';`);
-            console.log(result);
-            console.log(result_tag);
+        else if(check == 'text'){               
+            [result, metadata] = await sequelize.query(`SELECT post_id, user_name, user_id, content, post_date FROM user NATURAL JOIN post WHERE content LIKE '%${search}%';`);
+            global.redirect_data = result;
         }
         else if(check == 'writer'){
-            const [result, metadata] = await sequelize.query(`SELECT * FROM user NATURAL JOIN post NATURAL JOIN photo WHERE user_name LIKE '%${search}%';`);
-            console.log(result);
+            [result, metadata] = await sequelize.query(`SELECT * FROM user NATURAL JOIN post NATURAL JOIN photo WHERE user_name LIKE '%${search}%';`);
+            global.redirect_data = result;
         }
+        res.redirect('/home');
+        console.log(result);
     }
     catch(err){
         console.log(err);

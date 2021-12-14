@@ -7,10 +7,12 @@ const path = require('path');
 const nunjucks = require('nunjucks');
 const passport = require('passport');
 const {sequelize} = require('./models');
+//const passportConfig = require('./passport');
 
 
 dotenv.config();
 const app = express();
+//passportConfig();
 const initPage = require('./routes/init');
 const accountPage = require('./routes/account');
 const profilePage = require('./routes/profile');
@@ -18,6 +20,7 @@ const homePage = require('./routes/home');
 const followPage = require('./routes/follow');
 const newPage = require('./routes/new');
 const msgPage = require('./routes/msg');
+const editPage = require('./routes/edit');
 
 app.set('port',process.env.PORT || 8052);
 app.set('view engine','html');
@@ -58,6 +61,7 @@ app.use('/home',homePage);
 app.use('/follow',followPage);
 app.use('/new',newPage);
 app.use('/msg',msgPage);
+app.use('/edit',editPage);
 
 app.listen(app.get('port'),() =>{
     console.log(app.get('port'));

@@ -75,7 +75,7 @@ CREATE TABLE photo(
 CREATE TABLE hashtag(
     tag VARCHAR(32),
     post_id VARCHAR(64),
-    PRIMARY KEY (tag),
+    PRIMARY KEY (tag,post_id),
     FOREIGN KEY (post_id) REFERENCES post(post_id)
 );
 

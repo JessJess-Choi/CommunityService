@@ -6,6 +6,8 @@
                 text-align: center;
             }
         </style>
+        <script>
+        </script>
     </head>
     <body>
         <h1>
@@ -28,5 +30,19 @@
                 <input type="submit" value="검색">
             </form>
         </P>
+        <form action="/edit" method="post">
+            {% for i in data %}
+            <p>
+                게시자 : {{i.user_name}}
+            </p>
+            <p>
+                게시일 : {{i.post_date}}
+            </p>
+            <p>
+                내용 : {{i.content}}
+            </p>
+            <input type="submit" value="수정" id="{{i.post_id}}" name="{{i.post_id}}">
+            {% endfor %}
+        </form>
     </body>
 </html>
